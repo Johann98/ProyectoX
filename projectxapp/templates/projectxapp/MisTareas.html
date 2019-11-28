@@ -1,0 +1,14 @@
+{% extends "projectxapp/base.html" %}
+{% block titulo %}
+    TAREAS
+{% endblock %}
+{% block contenido %}
+    <a href="/tareas/crear_tarea" target='blank' rel="noopener noreferrer">
+        <button>Crear Tarea</button>
+    </a>
+        <ul>
+            {% for t in tareas %}
+                <li>{{ t.titulo }}</li>
+            {% endfor %}
+        </ul>
+{% endblock %}

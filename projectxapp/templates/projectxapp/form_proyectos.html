@@ -1,0 +1,43 @@
+{% extends "projectxapp/base.html" %}
+{% block titulo %}
+    CREAR PROYECTO
+{% endblock %}
+{% block contenido %}
+<div class="row">
+
+    <div class="col-md-12">
+      <div class="card card-user">
+        <div class="card-header">
+          <h5 class="card-title">Datos del proyecto</h5>
+        </div>
+        <div class="card-body">
+
+          <form method="POST" method="post"> {% csrf_token %}
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Titulo</label>
+                  <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Titulo de la tarea">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Descripción</label>
+                    <input type="text" name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la tarea">
+                  </div>
+                </div>
+              </div>
+            <div class="row">
+              <div class="update ml-auto mr-auto">
+                <button name="crearproyecto" type="submit" class="btn btn-primary btn-round">Crear proyecto</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
