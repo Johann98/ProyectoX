@@ -10,11 +10,15 @@
         <div class="table-responsive">
               <p class="text-left">Descripción: {{proyecto.descripcion}}</p>
               <p class="text-left">Arquitecto: {{arquitecto.first_name}} {{arquitecto.last_name}}</p>
-              <a class="btn btn-primary btn-round" href="/tareas/crear/{{proyecto.id}}">Crear tarea</a>
+              <a class="btn btn-primary btn-round" href="/tareas/crear/{{proyecto.id}}" style="display: block; margin: 0 auto; width:100%;">Crear tarea</a>
+          <br>
+          <br>
+
+          {% if tareas %}
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead class=" text-primary">
-              <th>Nombre Tarea</th>
-              <th></th>
+              <th>Nombre de la tarea</th>
+              <th>Acciones</th>
             </thead>
             <br>
             <br>
@@ -23,14 +27,18 @@
               <tr>
                   <td>{{ tarea.titulo }}</td>
                   <td>
-                    <button onclick="window.location.href='/tareadetalles/{{tarea.id}}'" type="button" class="btn btn-primary">Ver</button>
-
-                    <button type="button" class="btn btn-danger">Eliminar</button>
+                    <button onclick="window.location.href='/tareadetalles/{{tarea.id}}/'" type="button" class="btn btn-primary">Ver</button>
+                    <button onclick="window.location.href='/borrartarea/{{tarea.id}}/{{proyecto.id}}/'" type="button" class="btn btn-danger">Eliminar</button>
                   </td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
+          {% else %}
+            <h3>Este proyecto aún no tiene tareas</h3>
+          {% endif %}
+
+
         </div>
       </div>
     </div>

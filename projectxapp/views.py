@@ -4,6 +4,7 @@ from django.urls import reverse
 from .models import Proyecto, Tarea, User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
 # from django.contrib.auth.models import User
 
 # Create your views here.
@@ -84,6 +85,41 @@ def inicio(request):
     last_name = request.user.last_name
     context = {'first_name':first_name, 'last_name':last_name}
     return render(request, 'projectxapp/inicio.html', context)
+
+@login_required
+def perfil(request):
+    if (request.method == 'POST' and 'modificar' in request.POST):
+        first_name=request.POST.get('first_name', '')
+        last_name=request.POST.get('last_name', '')
+        username=request.POST.get('username', '')
+        email=request.POST.get('email', '')
+        password=request.POST.get('password', '')
+
+        user_obj = User.objects.get(id=request.user.id)
+
+        if(first_name!=''):
+            user_obj.first_name=first_name
+        if(last_name!=''):
+            user_obj.last_name=last_name
+        if(username!=''):
+            user_obj.username=username
+        if(email!=''):
+            user_obj.email=email
+        if(password!=''):
+            user_obj.set_password(password)
+        user_obj.save()
+        update_session_auth_hash(request, user_obj)
+        # if (password!=''):
+        #     return HttpResponseRedirect('/login/')
+        # else:
+        return HttpResponseRedirect('/perfil/')
+    else:
+        first_name = request.user.first_name
+        last_name = request.user.last_name
+        username = request.user.username
+        email = request.user.email
+        context = {'first_name':first_name, 'last_name':last_name, 'username':username, 'email':email}
+        return render(request, 'projectxapp/perfil.html', context)
 ####################################PROYECTOS#################################
 @login_required
 def proyectos(request):
@@ -106,6 +142,16 @@ def proyectodetalles(request, id):
     print(tasks)
     context = {'first_name':first_name, 'last_name':last_name, 'proyecto':project_obj, 'tareas':tasks, 'arquitecto':arquitecto}
     return render(request, 'projectxapp/proyecto.html', context)
+
+@login_required
+def borrartarea(request, tareaid, proyectoid):
+    Tarea.objects.filter(id=tareaid).delete()
+    return HttpResponseRedirect('/proyectodetalles/'+proyectoid)
+
+@login_required
+def borrarproyecto(request, id):
+    Proyecto.objects.filter(id=id).delete()
+    return HttpResponseRedirect('/proyectos/')
 
 
 @login_required
@@ -140,11 +186,19 @@ def form_tareas(request, id):
         print("developers")
         print(developers)
         desarrolladores=""
+        print("dev length")
+        print(len(developers))
         for i in developers:
             desarrolladores=desarrolladores+i+","
         desarrolladores = desarrolladores[:-1]
-
-        tarea_obj = Tarea(titulo=titulo, descripcion=descripcion, desarrolladores=desarrolladores, activo=True, avance=0, proyecto_id=id)
+        j=0
+        estados=""
+        while(j<len(developers)):
+            estados=estados+"activo,"
+            j=j+1
+        estados = estados[:-1]
+        print(estados)
+        tarea_obj = Tarea(titulo=titulo, descripcion=descripcion, desarrolladores=desarrolladores, estados=estados, avance=0, proyecto_id=id)
         tarea_obj.save()
 
         return HttpResponseRedirect('/proyectodetalles/'+ id)
@@ -186,30 +240,43 @@ def tareadetalles(request, id):
             else:
                 newdevs=olddevs+","+ndes
             if(oldstates==""):
-                newstates="activo"
+                j=0
+                newstates=""
+                while(j<len(newdevs)):
+                    newstates=newstates+"activo,"
+                    j=j+1
+                newstates = newstates[:-1]
             else:
-                newstates=oldstates+",activo"
+                newstates=oldstates+","
+                j=0
+                while(j<len(newdevs)):
+                    newstates=newstates+"activo,"
+                    j=j+1
+                newstates = newstates[:-1]
             tarea_obj.desarrolladores=newdevs
             tarea_obj.estados=newstates
             tarea_obj.save()
         return HttpResponseRedirect('/tareadetalles/'+ id)
     else:
         tarea_obj = Tarea.objects.get(id=id)
+        proyecto_obj = Proyecto.objects.get(id=tarea_obj.proyecto_id)
+        owner_obj= User.objects.get(id=proyecto_obj.arquitecto_id)
         developers=tarea_obj.desarrolladores
-        if developers:
-            desarrolladores=[]
-            desarrolladoreslist=developers.split(",")
-            for x in desarrolladoreslist:
-                usuario = User.objects.get(id=int(x))
-                desarrolladores.append(usuario)
-        else:
-            desarrolladoreslist=""
-            desarrolladores=""
+        desarrolladores=[]
+        desarrolladoreslist=developers.split(",")
+        for x in desarrolladoreslist:
+            usuario = User.objects.get(id=int(x))
+            desarrolladores.append(usuario)
         states=tarea_obj.estados
         estados=[]
         estadoslist=states.split(",")
         for x in estadoslist:
             estados.append(x)
+        if (request.user.id!=owner_obj.id):
+            numf=desarrolladoreslist.index(str(request.user.id))
+            estado=estadoslist[numf]
+        else:
+            estado=""
         tasks = Tarea.objects.all().filter(id=id)
         first_name = request.user.first_name
         last_name = request.user.last_name
@@ -225,7 +292,8 @@ def tareadetalles(request, id):
                 newusers.append(user)
 
         desarrolladoresdata=zip(desarrolladores,estados)
-        context = {'first_name':first_name, 'last_name':last_name, 'tarea':tarea_obj, 'desarrolladoresdata':desarrolladoresdata, 'newusers':newusers}
+        context = {'first_name':first_name, 'last_name':last_name, 'tarea':tarea_obj, 'proyecto':proyecto_obj,
+        'desarrolladoresdata':desarrolladoresdata, 'newusers':newusers, 'desarrolladores':desarrolladores, 'owner':owner_obj, 'estado':estado}
         return render(request, 'projectxapp/tarea.html', context)
 
 @login_required
@@ -295,7 +363,7 @@ def tareas(request):
         if str(request.user.id) in devlist:
             mistareas.append(tarea)
     print(request.user.id)
-    print(devlist)
+    #print(devlist)
     print(mistareas)
     first_name = request.user.first_name
     last_name = request.user.last_name

@@ -8,27 +8,31 @@
     <div class="card shadow mb-4">
       <div class="card-body">
         <div class="table-responsive">
-              <a class="btn btn-primary btn-round" href="/peliculas/crear">Crear proyecto</a>
-          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-            <thead class=" text-primary">
-              <th>Nombre Tarea</th>
-              <th></th>
-            </thead>
-            <br>
-            <br>
-            <tbody>
-              {% for tarea in tareas %}
-              <tr>
-                  <td>{{ tarea.titulo }}</td>
-                  <td>
-                    <button onclick="window.location.href='/tareadetalles/{{tarea.id}}'" type="button" class="btn btn-primary">Ver</button>
 
-                    <button type="button" class="btn btn-danger">Eliminar</button>
-                  </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+          {% if tareas %}
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead class=" text-primary">
+                <th>Nombre de la tarea</th>
+                <th>Acciones</th>
+              </thead>
+              <br>
+              <br>
+              <tbody>
+                {% for tarea in tareas %}
+                <tr>
+                    <td>{{ tarea.titulo }}</td>
+                    <td>
+                      <button onclick="window.location.href='/tareadetalles/{{tarea.id}}'" type="button" class="btn btn-primary">Ver</button>
+                    </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <h3>No tiene ninguna tarea asignada</h3>
+          {% endif %}
+
+
         </div>
       </div>
     </div>
