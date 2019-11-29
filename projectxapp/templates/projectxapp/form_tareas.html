@@ -2,52 +2,57 @@
 {% block titulo %}
     CREAR TAREA
 {% endblock %}
-
 {% block contenido %}
-<div class="card shadow mb-4">
-  <div class="card-body">
-    <div class="table-responsive">
-      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Arquitecto</th>
-            <th>Fecha de creación</th>
-            <th>Desarrollador</th>
-            <th>Estado del proyecto</th>
-            <th>Ver proyecto</th>
-          </tr>
-        </thead>
-        <tfoot>
-          <tr>
-            <th>ID</th>
-            <th>Arquitecto</th>
-            <th>Fecha de creación</th>
-            <th>Desarrollador</th>
-            <th>Estado del proyecto</th>
-            <th>Ver proyecto</th>
-          </tr>
-        </tfoot>
-        <tbody>
-          <tr>
-            <td>01</td>
-            <td>Johan Perilla</td>
-            <td>12/09/2019</td>
-            <td>Johan Perilla</td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>02</td>
-            <td>Juan Perez</td>
-            <td>11/09/2019</td>
-            <td>Johan Perilla</td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
+<div class="row">
+
+    <div class="col-md-12">
+      <div class="card card-user">
+        <div class="card-header">
+          <h5 class="card-title">Datos de la tarea</h5>
+        </div>
+        <div class="card-body">
+
+          <form method="post"> {% csrf_token %}
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Titulo</label>
+                  <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Titulo de la tarea">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Descripción</label>
+                    <input type="text" name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la tarea">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label>Desarrolladores</label>
+                      <br>
+                      <select  name="developers" id="developers" multiple="multiple">
+                        {% for user in users %}
+                            <option value="{{user.id}}">{{user.first_name}} {{user.last_name}}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+                  </div>
+                </div>
+
+            <div class="row">
+              <div class="update ml-auto mr-auto">
+                <button name="creartarea" type="submit" class="btn btn-primary btn-round">Crear tarea</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
     </div>
   </div>
-</div>
 {% endblock %}

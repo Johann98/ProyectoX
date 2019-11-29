@@ -14,10 +14,16 @@ urlpatterns = [
     url(r'^inicio/', views.inicio, name='inicio'),
     url(r'^proyectos/', views.proyectos, name='proyectos'),
     url(r'^proyectodetalles/(?P<id>\d+)/$', views.proyectodetalles, name='proyectodetalles'),
+    url(r'^tareadetalles/(?P<id>\d+)/$', views.tareadetalles, name='tareadetalles'),
     url(r'^proyectos/crear_proyecto', views.crear_proyecto, name='crear_proyecto'),
     url(r'^peliculas/crear/', views.form_proyectos, name='form_proyectos'),
     url(r'^tareas/', views.tareas, name='tareas'),
-    url(r'^tareas/crear_tarea/', views.crear_tarea, name='crear_tarea'),
+    url(r'^tareas/crear/(?P<id>\d+)/$', views.form_tareas, name='form_tareas'),
+
+    url(r'^activar/(?P<tareaid>\d+)/(?P<devid>\d+)/$', views.activar, name='activar'),
+    url(r'^desactivar/(?P<tareaid>\d+)/(?P<devid>\d+)/$', views.desactivar, name='desactivar'),
+    url(r'^borrardev/(?P<tareaid>\d+)/(?P<devid>\d+)/$', views.borrardev, name='borrardev'),
+    # url(r'^tareas/crear/', views.crear_tarea, name='crear_tarea'),
 
 
     # path('login/', views.form_login, name='form_login'),

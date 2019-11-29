@@ -29,7 +29,7 @@ class Tarea(models.Model):
     descripcion = models.CharField(max_length=500)
     avance = models.PositiveIntegerField(default=0)
     desarrolladores = models.TextField()
-    activo = models.BooleanField()
+    estados = models.TextField()
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     proyecto = models.ForeignKey(
         Proyecto,

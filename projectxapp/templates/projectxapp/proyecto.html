@@ -1,6 +1,6 @@
 {% extends "projectxapp/base.html" %}
 {% block titulo %}
-    PROYECTOS
+    {{proyecto.titulo}}
 {% endblock %}
 {% block contenido %}
 <div class="row">
@@ -8,20 +8,22 @@
     <div class="card shadow mb-4">
       <div class="card-body">
         <div class="table-responsive">
-              <a class="btn btn-primary btn-round" href="/peliculas/crear">Crear proyecto</a>
+              <p class="text-left">Descripción: {{proyecto.descripcion}}</p>
+              <p class="text-left">Arquitecto: {{arquitecto.first_name}} {{arquitecto.last_name}}</p>
+              <a class="btn btn-primary btn-round" href="/tareas/crear/{{proyecto.id}}">Crear tarea</a>
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead class=" text-primary">
-              <th>Nombre Proyecto</th>
+              <th>Nombre Tarea</th>
               <th></th>
             </thead>
             <br>
             <br>
             <tbody>
-              {% for p in proyectos %}
+              {% for tarea in tareas %}
               <tr>
-                  <td>{{ p.titulo }}</td>
+                  <td>{{ tarea.titulo }}</td>
                   <td>
-                    <button onclick="window.location.href='/inicio/'" type="button" class="btn btn-primary">Ver</button>
+                    <button onclick="window.location.href='/tareadetalles/{{tarea.id}}'" type="button" class="btn btn-primary">Ver</button>
 
                     <button type="button" class="btn btn-danger">Eliminar</button>
                   </td>

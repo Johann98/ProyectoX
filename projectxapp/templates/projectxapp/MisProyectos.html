@@ -17,11 +17,11 @@
             <br>
             <br>
             <tbody>
-              {% for p in proyectos %}
+              {% for proyecto in proyectos %}
               <tr>
-                  <td>{{ p.titulo }}</td>
+                  <td>{{ proyecto.titulo }}</td>
                   <td>
-                    <button onclick="window.location.href='/inicio/'" type="button" class="btn btn-primary">Ver</button>
+                    <button onclick="window.location.href='/proyectodetalles/{{proyecto.id}}'" type="button" class="btn btn-primary">Ver</button>
 
                     <button type="button" class="btn btn-danger">Eliminar</button>
                   </td>
