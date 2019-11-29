@@ -1,4 +1,7 @@
 {% extends "projectxapp/base.html" %}
 {% block titulo %}
     INICIO
+    <br>
+    <br>
+    Bienvenido {{request.user.first_name}} {{request.user.last_name}}
 {% endblock %}

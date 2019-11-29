@@ -17,7 +17,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Titulo</label>
-                  <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Titulo de la tarea">
+                  <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Titulo de la tarea" required>
                 </div>
               </div>
             </div>
@@ -25,7 +25,7 @@
                 <div class="col-md-12">
                   <div class="form-group">
                     <label>Descripción</label>
-                    <input type="text" name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la tarea">
+                    <input type="text" name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la tarea" required>
                   </div>
                 </div>
               </div>
@@ -35,7 +35,7 @@
                     <div class="form-group">
                       <label>Desarrolladores</label>
                       <br>
-                      <select  name="developers" id="developers" multiple="multiple">
+                      <select  name="developers" id="developers" multiple="multiple" style="display: block; margin: 0 auto; width:100%;">
                         {% for user in users %}
                             <option value="{{user.id}}">{{user.first_name}} {{user.last_name}}</option>
                         {% endfor %}

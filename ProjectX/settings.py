@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', 'proyectosytareas.herokuapp.com']
 
-
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+# EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,6 +43,8 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'projectxapp.User'
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -148,3 +151,13 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'proyectostareasemail@gmail.com'
+EMAIL_HOST_PASSWORD = 'czkioucdomsmscye'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'Equipo de ProyectosyTareas <noreply@cproyectosytareas.com>'
