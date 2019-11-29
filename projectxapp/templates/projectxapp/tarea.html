@@ -10,6 +10,7 @@
       <div class="card-body">
         <div class="table-responsive">
               <p class="text-left">Descripción: {{tarea.descripcion}}</p>
+              <p class="text-left">Arquitecto: {{owner.first_name}} {{owner.last_name}}</p>
               <p class="text-left">Avance: {{tarea.avance}}%</p>
 
               {% if proyecto.arquitecto_id != request.user.id %}
